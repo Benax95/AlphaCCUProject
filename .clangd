@@ -1,0 +1,7 @@
+CompileFlags:
+    Remove: [-f*, -m*]
+If:
+  PathExclude: [^(src|app|test)/.*]
+Diagnostics:
+  ClangTidy:
+    Remove: ['*']

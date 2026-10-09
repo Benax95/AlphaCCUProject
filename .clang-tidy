@@ -1,0 +1,57 @@
+# Enabled checks:
+#   - bugprone-* : common bugs (signed/unsigned, casts, loops...)
+#   - cert-* : SEI CERT C — covers the majority of MISRA-C rules
+#   - clang-analyzer-* : static flow analysis (null deref, memory...)
+#   - readability-identifier-naming : snake_case enforcement
+#
+# Explicitly disabled:
+#   - modernize-* : not relevant for C
+#   - cppcoreguidelines-* : too C++/opinionated
+#   - readability-magic-numbers : noisy in embedded (registers, masks...)
+#   - bugprone-easily-swappable-parameters : noisy on small structs
+#   - cert-dcl37-c / cert-dcl51-cpp : C++ reserved identifiers, not relevant
+#   - cert-dcl03-c : static_assert alias, triggered by Unity macros
+#   - clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling :
+#       flags memcpy, memset, memmove, sprintf, strncpy and demands the C11
+#       Annex K *_s replacements (memcpy_s, memset_s, ...).  Annex K is an
+#       OPTIONAL part of the C11 standard; neither glibc nor newlib implement
+#       it, so on every toolchain this project targets the suggestion is
+#       unactionable.  We use the standard libc mem* functions directly and
+#       accept the responsibility for correct usage (bounds, overlap, etc.).
+
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  readability-identifier-naming,
+  -bugprone-easily-swappable-parameters,
+  -cert-dcl37-c,
+  -cert-dcl51-cpp,
+  -cert-dcl03-c,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: '^(src|app|test)\/.*'
+
+CheckOptions:
+  # snake_case
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.TypedefCase
+    value: lower_case
+  - key: readability-identifier-naming.StructCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+ExtraArgs:
+  - -std=c11

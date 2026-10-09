@@ -1,0 +1,62 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "default",
+            "displayName": "Default Configuration",
+            "description": "Common Configuration",
+            "cacheVariables": {
+                "MY_ACTIVE_PRESET_NAME": "${presetName}",
+                "CMAKE_EXPORT_COMPILE_COMMANDS":true
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": "default",
+            "binaryDir": "build/debug",
+            "displayName": "debug",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "RISCV32_TOOLCHAIN_BIN": "$env{HOME}/.espressif/tools/riscv32-esp-elf/esp-15.2.0_20251204/riscv32-esp-elf/bin",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchain-esp32c6.cmake",
+                "CMAKE_BUILD_TYPE":"Debug"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": "default",
+            "binaryDir": "build/release",
+            "displayName": "release",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "RISCV32_TOOLCHAIN_BIN": "$env{HOME}/.espressif/tools/riscv32-esp-elf/esp-15.2.0_20251204/riscv32-esp-elf/bin",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchain-esp32c6.cmake"
+            }
+        },
+        {
+            "name": "test",
+            "inherits": "default",
+            "binaryDir": "build/test",
+            "displayName": "test",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_BUILD_TYPE":"Debug"
+            }
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "release",
+            "configurePreset": "release"
+        },
+        {
+            "name": "test",
+            "configurePreset": "test"
+        }
+    ]
+}
